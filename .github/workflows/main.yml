@@ -144,6 +144,15 @@ jobs:
         image: ${{ steps.generate.outputs.image-name }}
         environment-variables: |
           APP_VERSION=${{ steps.generate.outputs.image-tag }}
+    
+    - name: Register new ECS task definition revision
+      id: register-task-def
+      run: |
+        NEW_TASK_DEF=$(aws ecs register-task-definition \
+          --cli-input-json file://${{ steps.task-def.outputs.task-definition }} \
+          --query 'taskDefinition.taskDefinitionArn' \
+          --output text)
+        echo "task-def-arn=$NEW_TASK_DEF" >> $GITHUB_OUTPUT
 
     - name: Create and upload CodeDeploy artifacts
       id: codedeploy-artifacts
@@ -155,7 +164,7 @@ jobs:
           - TargetService:
               Type: AWS::ECS::Service
               Properties:
-                TaskDefinition: "${{ steps.task-def.outputs.task-definition-arn }}"
+                TaskDefinition: "${{ steps.register-task-def.outputs.task-def-arn }}"
                 LoadBalancerInfo:
                   ContainerName: "$ECR_REPOSITORY"
                   ContainerPort: 8000
@@ -163,7 +172,7 @@ jobs:
         EOF
 
         # Create deployment package
-        zip -r deployment-${{ steps.generate.outputs.image-tag }}.zip appspec.yml
+        zip -r deployment-${{ steps.generate.outputs.image-tag }}.zip appspec.yml ${{ steps.task-def.outputs.task-definition }}
 
         # Upload to S3
         aws s3 cp deployment-${{ steps.generate.outputs.image-tag }}.zip s3://${{ env.S3_BUCKET }}/deployments/
@@ -190,16 +199,6 @@ jobs:
           echo "CodeDeploy Blue/Green deployment failed"
           exit 1
         fi
-
-    - name: Wait for service stability
-      run: |
-        echo "Waiting for service to reach steady state..."
-        aws ecs wait services-stable \
-          --cluster $ECS_CLUSTER \
-          --services $ECS_SERVICE \
-          --region $AWS_REGION
-        
-        echo "Service deployment completed successfully!"
 
   notify:
     name: Notify Deployment Status
