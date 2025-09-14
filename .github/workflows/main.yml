@@ -12,7 +12,7 @@ env:
   ECS_SERVICE: mercor-ecs-app-service
   ECS_CLUSTER: mercor-ecs-app-cluster
   ECS_TASK_DEFINITION: mercor-ecs-app
-  CODEDEPLOY_APPLICATION: mercor-ecs-app-app
+  CODEDEPLOY_APPLICATION: mercor-ecs-app
   CODEDEPLOY_DEPLOYMENT_GROUP: mercor-ecs-app-deployment-group
   S3_BUCKET: mercor-ecs-app-codedeploy-artifacts-yds6fgs2
 
