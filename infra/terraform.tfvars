@@ -15,7 +15,7 @@ app_count = 2
 health_check_path = "/health"
 
 # EC2 Configuration
-instance_type = "t2.nano"
+instance_type = "t2.micro"
 min_size = 1
 max_size = 3
 desired_capacity = 2
