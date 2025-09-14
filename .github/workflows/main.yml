@@ -14,7 +14,7 @@ env:
   ECS_TASK_DEFINITION: mercor-ecs-app
   CODEDEPLOY_APPLICATION: mercor-ecs-app
   CODEDEPLOY_DEPLOYMENT_GROUP: mercor-ecs-app-deployment-group
-  S3_BUCKET: mercor-ecs-app-codedeploy-artifacts-yds6fgs2
+  S3_BUCKET: mercor-ecs-app-codedeploy-artifacts-o9d6hqgn
 
 permissions:
   contents: read
