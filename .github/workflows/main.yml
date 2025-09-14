@@ -145,13 +145,6 @@ jobs:
         environment-variables: |
           APP_VERSION=${{ steps.generate.outputs.image-tag }}
 
-    - name: Get S3 bucket for CodeDeploy
-      id: get-s3-bucket
-      working-directory: ./infra
-      run: |
-        S3_BUCKET=$(terraform output -raw codedeploy_s3_bucket)
-        echo "s3_bucket=$S3_BUCKET" >> $GITHUB_OUTPUT
-
     - name: Create and upload CodeDeploy artifacts
       id: codedeploy-artifacts
       run: |
