@@ -74,8 +74,6 @@ module "ecs" {
   min_size         = var.min_size
   max_size         = var.max_size
   desired_capacity = var.desired_capacity
-
-  # Zero-downtime update configuration
   health_check_grace_period         = var.health_check_grace_period
   instance_warmup                   = var.instance_warmup
   min_healthy_percentage            = var.min_healthy_percentage
@@ -88,7 +86,6 @@ module "ecs" {
   app_cpu        = var.app_cpu
   app_memory     = var.app_memory
   app_count      = var.app_count
-  app_version    = "v1.0.0"
 
   tags = merge(var.tags, {
     Project     = var.project_name

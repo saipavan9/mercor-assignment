@@ -80,7 +80,6 @@ variable "health_check_path" {
 variable "instance_type" {
   description = "EC2 instance type for ECS cluster"
   type        = string
-  default     = "t3.medium"
 }
 
 variable "min_size" {

@@ -72,12 +72,12 @@ resource "aws_autoscaling_group" "ecs" {
   min_size            = var.min_size
   max_size            = var.max_size
   desired_capacity    = var.desired_capacity
-  health_check_type   = "EC2"
+  health_check_type   = "ELB"
   health_check_grace_period = var.health_check_grace_period
 
   launch_template {
     id      = aws_launch_template.ecs.id
-    version = "$Latest"
+    version = aws_launch_template.ecs.latest_version
   }
 
   instance_refresh {
@@ -86,7 +86,9 @@ resource "aws_autoscaling_group" "ecs" {
       instance_warmup        = var.instance_warmup
       min_healthy_percentage = var.min_healthy_percentage
       auto_rollback         = true
+      scale_in_protected_instances = "Ignore"
     }
+    triggers = ["launch_template"]
   }
 
   tag {
@@ -104,8 +106,6 @@ resource "aws_autoscaling_group" "ecs" {
     }
   }
 
-  protect_from_scale_in = true
-
   lifecycle {
     create_before_destroy = true
     ignore_changes = [desired_capacity]
@@ -120,7 +120,6 @@ resource "aws_ecs_capacity_provider" "main" {
       status = "ENABLED"
       target_capacity = 100
     }
-    managed_termination_protection = "ENABLED"
   }
   tags = var.tags
 }
@@ -152,7 +151,6 @@ resource "aws_ecs_task_definition" "app" {
     
     environment = [
       { name = "PORT", value = tostring(var.container_port) },
-      { name = "APP_VERSION", value = var.app_version }
     ]
     
     logConfiguration = {
@@ -240,7 +238,7 @@ resource "aws_codedeploy_deployment_group" "main" {
   blue_green_deployment_config {
     terminate_blue_instances_on_deployment_success {
       action                           = "TERMINATE"
-      termination_wait_time_in_minutes = 5
+      termination_wait_time_in_minutes = 1
     }
     deployment_ready_option {
       action_on_timeout = "CONTINUE_DEPLOYMENT"
