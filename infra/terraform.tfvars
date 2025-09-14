@@ -15,7 +15,7 @@ app_count = 2
 health_check_path = "/health"
 
 # EC2 Configuration
-instance_type = "t3.micro"
+instance_type = "t3.medium"
 min_size = 1
 max_size = 3
 desired_capacity = 2
