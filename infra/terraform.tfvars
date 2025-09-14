@@ -1,0 +1,45 @@
+project_name = "mercor-ecs-app"
+
+aws_region = "ap-southeast-2"
+
+vpc_cidr = "10.0.0.0/16"
+
+availability_zones = ["ap-southeast-2a", "ap-southeast-2b"]
+
+public_subnets = ["10.0.101.0/24", "10.0.102.0/24"]
+
+private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
+
+enable_nat_gateway = true
+
+container_port = 8000
+
+app_cpu = 256
+
+app_memory = 512
+
+app_count = 2
+
+health_check_path = "/health"
+
+# EC2 Configuration
+instance_type = "t3.medium"
+
+min_size = 1
+
+max_size = 3
+
+desired_capacity = 2
+
+# Zero-downtime update configuration
+health_check_grace_period = 300
+
+instance_warmup = 300
+
+min_healthy_percentage = 50
+
+tags = {
+  Environment = "production"
+  Project     = "mercor-ecs-app"
+  ManagedBy   = "terraform"
+}
