@@ -9,7 +9,7 @@ VERSION = os.getenv('APP_VERSION', 'v1.0.0')
 @app.route('/')
 def hello():
     return jsonify({
-        'message': f'Hello from Blue Deployment!',
+        'message': f'Hello from Green Deployment!',
         'version': VERSION,
         'timestamp': datetime.datetime.now().isoformat()
     })
