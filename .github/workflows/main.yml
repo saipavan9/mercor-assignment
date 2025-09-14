@@ -38,7 +38,7 @@ jobs:
           infra:
             - 'infra/**'
           code: 
-            - !'infra/**'
+            - '!infra/**'
 
   deploy-infrastructure:
     name: Deploy Infrastructure
