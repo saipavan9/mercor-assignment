@@ -79,7 +79,7 @@ jobs:
 
     - name: Terraform Apply
       working-directory: ./infra
-      run: tterraform apply -auto-approve
+      run: terraform apply -auto-approve
 
     - name: Get Terraform Outputs
       id: tf-outputs

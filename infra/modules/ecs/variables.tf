@@ -122,13 +122,6 @@ variable "app_count" {
   type        = number
   default     = 2
 }
-
-variable "app_version" {
-  description = "Application version"
-  type        = string
-  default     = "v1.0.0"
-}
-
 variable "alb_listener_arn" {
   description = "ARN of the ALB listener"
   type        = string
