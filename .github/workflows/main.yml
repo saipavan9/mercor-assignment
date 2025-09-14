@@ -168,11 +168,10 @@ jobs:
                 LoadBalancerInfo:
                   ContainerName: "$ECR_REPOSITORY"
                   ContainerPort: 8000
-                PlatformVersion: "LATEST"
         EOF
 
         # Create deployment package
-        zip -r deployment-${{ steps.generate.outputs.image-tag }}.zip appspec.yml ${{ steps.task-def.outputs.task-definition }}
+        zip -r -j deployment-${{ steps.generate.outputs.image-tag }}.zip appspec.yml ${{ steps.task-def.outputs.task-definition }}
 
         # Upload to S3
         aws s3 cp deployment-${{ steps.generate.outputs.image-tag }}.zip s3://${{ env.S3_BUCKET }}/deployments/
